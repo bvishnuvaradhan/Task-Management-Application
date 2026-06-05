@@ -3,10 +3,14 @@ require('dotenv').config();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const dbURI = process.env.MONGODB_URI || process.env.DATABASE_URL;
+    if (!dbURI) {
+      throw new Error('No database connection string provided in environment variables.');
+    }
+    await mongoose.connect(dbURI);
     console.log('MongoDB connected');
   } catch (err) {
-    console.error(err.message);
+    console.error('Database connection error:', err.message);
     process.exit(1);
   }
 };
