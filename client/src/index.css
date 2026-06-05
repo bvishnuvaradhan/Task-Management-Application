@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #aa3bff;
+  --color-primary-light: #c084fc;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-50 text-gray-900 transition-colors duration-200 dark:bg-slate-950 dark:text-gray-50;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
