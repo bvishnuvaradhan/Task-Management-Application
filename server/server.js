@@ -13,12 +13,28 @@ const server = http.createServer(app);
 // Connect to DB
 connectDB();
 
+// CORS configuration to allow local and Vercel environments dynamically
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'http://localhost:5173',
+  'http://localhost:3000'
+].filter(Boolean);
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl) or matching origins
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app') || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+};
+
 // Initialize Socket.io
 const io = socketIo(server, {
-  cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"]
-  }
+  cors: corsOptions
 });
 
 app.set('io', io);
@@ -37,7 +53,7 @@ io.on('connection', (socket) => {
 });
 
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Routes

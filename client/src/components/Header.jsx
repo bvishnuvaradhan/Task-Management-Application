@@ -26,6 +26,9 @@ function Header() {
               <Link to="/tasks/new" className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">
                 + Add Task
               </Link>
+              <Link to="/profile" className="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors font-medium">
+                Profile
+              </Link>
             </>
           ) : (
             <>
